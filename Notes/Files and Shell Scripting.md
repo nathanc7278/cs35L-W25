@@ -115,7 +115,7 @@ When you want to use standard input as an argument: use `-` as the argument.
 
 `rm` command does not truly delete a file if someone is accessing it. It gets rid of the link between directory entries.
 
-```js
+```
     (rm ouch; cat) < ouch
     // where ouch contains some text
 ```
@@ -138,6 +138,6 @@ contents of a symlink is a nonempty string of bytes sliced into a file name.
 
 To send errors to a file append the redirection operator with a 2.
 
-```js
+```
     ./hello.c <&- > output 2> error
 ```
