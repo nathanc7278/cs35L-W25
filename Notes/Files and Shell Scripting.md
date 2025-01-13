@@ -39,7 +39,7 @@ In simple terms, the Linux terminal has many commands. Some of them are:
         style Cpp-library fill:#850
 ```
 
-Emacs is an IDE that allows text manipulation and shell commands. Emacs is modeless, so many commands start with Control and Meta keys. Additionally Emacs has `electric` features. Creating a newline will match the previous line's indentation.
+Emacs is an IDE that allows text manipulation and shell commands. Emacs is modeful, so many commands start with Control and Meta keys. Additionally Emacs has `electric` features. Creating a newline will match the previous line's indentation.
 
 `Killed` text can be brought back at any position.
 
