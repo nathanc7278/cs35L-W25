@@ -45,6 +45,7 @@
 | C-s | search from cursor, repeated C-s will go to next occurance. Backspace will go to previous |
 | C-r | reverse search from cursor |
 | C-M-s | regex search from cursor |
+| M-% | query replace command: 'y' to replace current, '.' to replace current and stop |
 
 ## Window Management
 
