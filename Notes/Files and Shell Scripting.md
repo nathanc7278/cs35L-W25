@@ -141,3 +141,53 @@ To send errors to a file append the redirection operator with a 2.
 ```
     ./hello.c <&- > output 2> error
 ```
+
+In Emacs:
+
+* `files` are data in secondary storage (OS notion - visible to all apps)
+    * there is `metadata` (timestamps, ownership, permissions, etc)
+        * metadata is managed by OS
+        * OS is in charge. Program makes the request.
+* `buffer` is the data in Emac's "RAM". It is volatile and does not survive power outages.
+    * the buffer is invisible to all other programs (but with user/or root, it can override this).
+
+Files beginning with "." are less visible to users.
+
+Emacs creates file names starting with `#` to hold contents of buffers even when you havent saved the buffer. It does so periodically, not all the time (that would be too slow).
+
+Emacs creates dangling symlinks with names starting with `.#`.
+
+* when you exit Emacs, it stops the program in the background. You can use the command `fg` to bring it back to the foreground. If you start a 2nd process of Emacs, you can use `C-x C-z fg` to bring back the originial process.
+
+`ps` displays process status. The option `-e` displays all processes and `-f` displays more details.
+
+Redirection operators take input from streams and outputs to other streams.
+
+* `<` take stdin from file `stream 0`
+* `>` put stdout to file `stream 2`
+* `2>` put stderr to file `stream 2`
+
+```
+    command > outfile 2>&1
+```
+This makes stream 2 point to the same thing at stream 1. 
+
+Aditionally pipe, `|`, makes commands run in parallel as opposed to `;` which makes commands run sequentially.
+
+`$?` stands for the exit status of the most recently called command.
+
+By doing `echo $?`, and output of:
+
+* `0` means success
+* `1-255` anything else is failure
+
+### In Lisp mode
+
+```lisp
+    (+ 5 12) // C-j
+    17
+
+    (kill-emacs)
+```
+
+`C-j` runs the previous line's command. 
