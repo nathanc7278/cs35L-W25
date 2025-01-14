@@ -21,6 +21,7 @@
 | C-h f `function` | displays info about `function` |
 | C-h a `name` | opens command Apropos: lists the commands containing `name` that can be invoked with M-x |
 | C-h i | info manuals |
+| C-h m | displays info about current mode |
 
 ## Navigational Commands
 
@@ -51,7 +52,11 @@
 
 | Command | Description |
 | --- | --- |
-| C-x `n` | changes the current number of windows on the screen to `n` |
+| C-x `1` | closes all but one window |
+| C-x `2` | splits the window vertically |
+| C-x `3` | splits the window horizontally |
+| C-x `5` | creates a new frame with this window |
+| C0x `0` | deletes the window |
 
 ## Text Editing
 
