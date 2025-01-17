@@ -155,6 +155,8 @@ Each instance of a shell is a a seperate process with its own data, input/output
 
 `case 'i' in 'condition') 'command';; ... esac` uses globbing
 
+`exit n` quit the script and return an exit code of `n`
+
 #### Variables have String Values
 
 `a='b c d'` declares a variable `a` with contents in the string
