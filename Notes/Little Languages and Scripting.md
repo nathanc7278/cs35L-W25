@@ -93,6 +93,14 @@ If a file name starts with `/` it's absolute: you start at the root directory to
 
 `P$` matches only at the end of the line
 
+`?=P` positive lookahead, matches if the pattern `P` occurs ahead in the line.
+
+`?!P` negative lookahead, matches if the pattern `P` does not occur ahead in the line.
+
+`?<=P` positive lookbehind, matches if the pattern `P` occurs behind in the line.
+
+`?<!P` negative lookahead, matches if the pattern `P` does not occur ahead in the line.
+
 **Distributive Law:** `P(Q|R) == (PQ|PR)`
 
 ### BREs are like EREs, except:
@@ -173,6 +181,6 @@ Each instance of a shell is a a seperate process with its own data, input/output
 
 `sum=$((5+3))` arithmetic expansion is done with double parenthesis.
 
-`if [condition]; then 'command'; elif [condition]; then `commands`; else commands[]fi` conditional statement
+`$(seq n k)` outputs the amount of elements in the sequence from `n` to `k`
 
 
