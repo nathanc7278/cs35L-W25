@@ -181,6 +181,8 @@ By doing `echo $?`, and output of:
 * `0` means success
 * `1-255` anything else is failure
 
+`shuf` command that shuffles a file.
+
 ### In Lisp mode
 
 ```lisp
