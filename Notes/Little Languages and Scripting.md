@@ -139,15 +139,13 @@ Each instance of a shell is a a seperate process with its own data, input/output
 
 #### Reserved Words:
 
+`for 'i' in 'number'; do 'command'; done` for loop
+
+`while [condition]; do 'commands'; done` while loop
+
 `{}`
 
-`if then else fi`
-
 `case in esac` uses globbing
-
-`while do done`
-
-`for v in words; do done`
 
 #### Variables have String Values
 
@@ -155,9 +153,11 @@ Each instance of a shell is a a seperate process with its own data, input/output
 
 `$?` most recent exit status
 
-`$*` all the arguments of the current shell
+`$#` number of arguments
 
-`$@` like `$*`, but works better inside `""`
+`$*` expands the arguments `$1, $2, $3...`. less safe than `$@`. Use with double quotes to handle arguments with white spaces.
+
+`$@` expands the arguments `$1, $2, $3...`. Use with double quotes to handle arguments with white spaces.
 
 `$n` gets argument `n`
 
@@ -170,3 +170,9 @@ Each instance of a shell is a a seperate process with its own data, input/output
 `${x+ifset}` get's `x`'s value if `ifset` == true, nothing otherwise
 
 `${x=default}` sets `x` to `default` if unset
+
+`sum=$((5+3))` arithmetic expansion is done with double parenthesis.
+
+`if [condition]; then 'command'; elif [condition]; then `commands`; else commands[]fi` conditional statement
+
+
