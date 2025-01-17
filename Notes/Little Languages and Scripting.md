@@ -185,4 +185,15 @@ Each instance of a shell is a a seperate process with its own data, input/output
 
 `$(seq n k)` outputs the amount of elements in the sequence from `n` to `k`
 
+`-eq` used in conditional statements for `equal to`
+
+`-ne` used in conditional statements for `not equal`
+
+`-gt` used in conditional statemetns for `greater than`
+
+`-ge` used in conditional statemetns for `greater than or equal to`
+
+`-lt` used in conditional statemetns for `less than`
+
+`-le` used in conditional statemetns for `less than or equal to`
 
