@@ -139,13 +139,13 @@ Each instance of a shell is a a seperate process with its own data, input/output
 
 #### Reserved Words:
 
+`{}`
+
 `for 'i' in 'number'; do 'command'; done` for loop
 
 `while [condition]; do 'commands'; done` while loop
 
-`{}`
-
-`case in esac` uses globbing
+`case 'i' in 'condition') 'command';; ... esac` uses globbing
 
 #### Variables have String Values
 
