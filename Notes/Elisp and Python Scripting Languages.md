@@ -37,7 +37,69 @@ This is a special form, `(defun f (a b c) ("code involving a b c"))`
 
 `(global-set-key "keystroke" 'command)` changes a keystroke to a certain command.
 
+* additionally the keystroke can also be `(kbd "C-x C-a")` to change a keybind to C-x C-a without escaping the control characters.
+
 `C-]` closes the debugger in Lisp.
+
+`(quote (1 2 3))` quote is a special form. It is the same as `'(1 2 3)`
+
+`(list 1 (+ 1 1) 3)` displays the list after it evaluates
+
+* `(1 2 3)`
+
+`(reverse (1 2 3))` reverses a list:
+
+* `(3 2 1)`
+
+`(append '(1 2) '(3 4))` appends at the end of a list
+
+* `(1 2 3 4)`
+
+`cadr` the car of the cdr
+
+`(cadr '(1 2 3))` returns `2`
+
+Doing extra `car`/`cdr` on a single symbol will give you an error. The number of a's and d's in `car`/`cdr` can go up 4.
+
+Example Problem:
+
+convert (3 + 2 * 5 > 0 && 7 < 3 / 5) to elisp
+
+`(and (> (+ (* 2 5) 3) 0) (< 7 (/ 3 5)))`
+
+`(and X Y)` logical X and Y. This returns the second element if X is true.
+
+`(or X Y)` logical X or Y. This returns the first true element or nil if neither is true.
+
+`(not X)` logical not X
+
+`(point)` returns the character position of cursor in the buffer
+
+`(mark)` returns the character position of the mark in the buffer
+
+### Example Elisp Code Snippets
+
+```lisp
+(defun is-line-number-even ()
+    (interactive)
+        (let (line (line-number-at-pos (point)))
+            (if (= (mod line 2) 0)
+                (message "Line %d is even" line)
+                (message "Line %d is odd" line))
+        )
+)
+```
+
+For a function to run with `M-x` you need to include `(interactive)`.
+
+```lisp
+(defun add-two (a b)
+    (interactive "nNumber 1: \nnNumber2: ")
+        (message "%d + %d = %d" a b (+ a b))
+)
+```
+
+The `n` prompts the user for an integer.
 
 ## Python:
 
