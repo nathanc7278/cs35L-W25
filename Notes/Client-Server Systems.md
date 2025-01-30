@@ -209,3 +209,257 @@ HTTP is a super-simple protocol
 * security was not in mind when HTTP was created. 
 * HTTPS is the secure alternative.
 
+`HTTP/1` TCP based. It creates a connection when a request is made, and it closes the connection after the response.
+
+```mermaid
+    graph TB
+        subgraph Server
+            e@{label: " "}
+            f@{label: " "}
+            g@{label: " "}
+
+        end
+        subgraph Client
+            a@{label: " "}
+            b@{label: " "}
+            c@{label: " "}
+            d@{label: " "}
+        end
+        a --> e
+        e --> b
+        b --> f
+        f --> c
+        c --> g
+        g --> d
+```
+
+Most of the time wasted is on communcation travel time.
+
+`HTTP/2` TCP based. It was made for more transport effieciency. Some features are:
+
+* pipelining (parallel requests)
+* multiplexing (handling requests on one connection)
+    * this saves setup/breakdown time of each connection made
+* compression of headers
+* server push (the server pushes various resources to the browser even when not requested)
+
+```mermaid
+    graph TB
+        subgraph Server
+            e@{label: " "}
+
+        end
+        subgraph Client
+            a@{label: " "}
+            b@{label: " "}
+            
+        end
+        a --1--> e
+        e --1--> b
+        a --2--> e
+        e --3--> b
+        a --3--> e
+        e --2--> b
+        a --4--> e
+        e --4--> b
+```
+
+Handling requests in parallel will be faster, but we have to keep track of requests using tags. The responses may also be returned in different orders.
+
+`HTTP/3` It uses QUIC (Google) which is based on UDP. It was made to avoid packet delays in TCP when rendering audio and videos.
+
+`HTML` is based on `SGML` which stands for Standard Generalized Markup Language. SGML is a common markup language that allows conversion between the different languages publishers had.
+
+SGML is:
+
+* declarative, not imperative
+
+```
+declarative: <SUPERSCRIPT>3</SUPERSCRIPT>
+imperative:  print("3" at location -961, 1053)
+```
+
+* avoids oversimplifying what you wanted in a document
+* focuses on content and not on form
+* had `Document Type Definitions (DTD)` which specified allowed elements
+
+`HTML Element`
+
+* represents a node in a document tree
+* surrounded by tags
+* closing tags can sometimes be omitted
+
+```html
+    <html>
+        <head>
+            ...
+        </head>
+        <body>
+            ...
+        </body>
+    </html>
+```
+
+`<br/>` is a line break that denotes both open and end of a break element. It is equivalent to `<br></br>`.
+
+HTML elements have attributes:
+
+```
+<br align="right" color="blue"/>
+```
+
+`HTML Entities`
+
+* ordinary text
+* `&rarrow;` special characters denoted with ampersand
+* `&#917;` unicode
+* `&amp;` ampersand
+* `&lt;` less than symbol
+* `&gt;` greater than symbol
+
+`XML` Extensible Markup Language
+
+* standardizes HTML syntactical constructs, `head` and `html`
+* exchange of any tree structured data
+    * nodes have attributes
+    * leaves are text or entities
+
+`XHTML` did not work because HTML kept evolving.
+
+HTML had a DTD but nowadays there is `HTML 5` the Living Standard. HTML 5 allows `<video>` and `<audio>` elements.
+
+## Document Object Model(DOM)
+
+`DOMs` are an easy way to refer to elements of the HTML tree. You can:
+
+* traverse the tree
+* update the tree
+
+DOM supplies APIs for doing the above in Javascript.
+
+```mermaid
+    graph TB
+        html@{shape: circle} --> head@{shape: circle}
+        html --> body@{shape: circle}
+        style html fill:#070
+        style head fill:#070
+        style body fill:#070
+```
+
+## Cascading Style Sheets(CSS)
+
+goal: clean seperation between form and content (both declarative)
+
+* Styles are inherited in the DOM tree
+* you can get styles from:
+    * element's CSS attribute
+    * ancestor
+    * user
+    * browser
+    * inline
+
+```CSS
+example of inline: <span style="font-variant: small-caps;">ucla</span>
+```
+    
+<span style="font-variant: small-caps;">ucla</span>
+
+## Javascript
+
+Yet another programming language. It is like Python but with C syntax.
+
+```js
+    <script> src="hello.js" />
+```
+
+In the DOM there is a script element that has attribute `src="hello.js"`. If this is called in `https://ucla.edu/registrat.html` it will redirect to `https://ucla.edu/hello.js`. This process is ran in the browser.
+
+```js
+    <script>alert("Hello World!");</script>
+            // this accesses DOM
+            // can modify DOM
+```
+
+### JSX (Javascript Extended)
+
+* gives you an easy way to modify DOM
+
+```JSX
+    const class = "CS 35L";
+    const n = 4;
+    const header = <h1 lang="en" {class} assignment {n+1}/>
+                    // the above can appeaer anywhere that a 
+                    // function call can appear.
+```
+
+JSX produces a React element, that can modify DOM.
+
+```JSX
+    ReactDOM.render(header, document.getElementByID('root'));
+```
+
+## Browser Rendering Pipeline
+
+* browser reads web page over net.
+* the user is impatient
+
+This process is too slow so some optimizations that browsers usually have is:
+
+* browser starts displaying before page is read
+* if elemetn won't appear on screen it will not examine it
+    * if it is a script element it won't run
+* if element is low priority, it will not execute it immediately
+    * for example, popup menus
+* browser will guess whole layout and start rendering and will update later if guess is wrong
+    * size of tables on the page can be rendered with incorrect lengths and widths until the page gets it correct
+
+## Javascript Object Notation (JSON)
+
+```JSON
+    {"menu": {
+        "id": "file",
+        "value": "File",
+        "popup": {...}
+        }
+    }
+```
+
+```mermaid
+    graph TB
+        menu@{shape: circle} --> id@{shape: circle}
+        menu --> value@{shape: circle}
+        menu --> popup@{shape: circle}
+        id --> file@{shape: braces}
+        value --> File@{shape: braces}
+        style menu fill:#079
+        style id fill:#079
+        style value fill:#079
+        style popup fill:#079
+```
+
+Like XML, it is a textual representation of a tree. You can represent DOMs in JSON.
+
+## Node.js
+
+`Node.js` is a Javascriopt runtime for asynchronous events. It is event-driven programming.
+
+In the Node Library, it waits for events and handles the events:
+
+```js
+    "main"
+    while(true) {
+        e=getNextEvent();
+        handleEvent(e);
+    }
+```
+
+What we neet to write is the functions that handle the events. These functions cannot loop and must finish quickly. It should be `O(1)` runtime:
+
+```js
+    handle_event_1(args){
+        ...
+    }
+    handle_event_2(args){
+        ...
+    }
+```
