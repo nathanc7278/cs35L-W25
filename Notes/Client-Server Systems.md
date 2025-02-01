@@ -463,3 +463,62 @@ What we neet to write is the functions that handle the events. These functions c
         ...
     }
 ```
+Sample Questions:
+
+Suppose `React` was written in `C++` rather than `JS`. What are the differences in debugging?
+
+C++ is a compiled language:
+
+* 2 error types
+   * compile-time
+   * runtime
+* need to worry about memory allocation
+
+Javascript is an interpreted language:
+
+* only runtime errors
+
+Suppose we use `Python` rather than `Node.js`. What are the differences in debugging a `React` app.
+
+Python and Node.js are both interpreted languages. Debugging will be very similar. Python connection with a browser will be much more difficult than Node.js because most browsers support JS. Python codde would need to be converted to JS to be shown on a browser.
+
+```JS
+   // index.jsx:
+import React, {useState} from 'react'
+
+export function App() {
+   const [counter, setCounter] = useState(0);
+   const increment = () => {setCounter(counter + 1);};
+   return (
+      <div classNmae='App'>
+         <h1>Counter is: {counter}.</h1>
+         <button onClick={increment}>
+            Increment
+         </button>
+         <button onClick={() => setCounter(0);}>
+            Reset
+         </button>
+      </div>
+   );
+}
+```
+
+Using `let` to declare a primitive instead of states will not re-render elements of the browser when the variable is updated. To ensure that the browser gets updated, use states to update elements.
+
+```JS
+   {nums.map((num,index)=>(
+      <p key={index}>Number{index}: {num}</p>
+   ))}
+   // the map function acts as a for loop
+```
+
+```JS
+   setNums([...nums,num]);
+   // ... is the spread operator. If nums = [0, 1, 2] and num = 3, then nums would be set to [0, 1, 2, 3]
+```
+
+Problem: There is a client server relationship between LA and Tokyo. If it always takes 128 ms to send/recieve a packet(UDP) roundtrip. `a` What is the best/worst (staleness) case for a cache update if Tokyo recieves a packet in 1 second? `b` What is the worst case time that the cache is updated correctly over its lifetime?
+
+a. The best case is 0 seconds, where the cache never needs to be updated because it matches the packet recieved. The worst case scenario is 1 second + $\frac{128}{2}$ milisecond = 1.064 seconds for the packet to update in Tokyo.
+
+b. The worst case that the cache is updated correctly over its lifetime is infinite time. This can happen because UDP can keep dropping packets and the cache is never updated correctly.
