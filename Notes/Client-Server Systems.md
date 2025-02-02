@@ -237,8 +237,8 @@ Most of the time wasted is on communcation travel time.
 
 `HTTP/2` TCP based. It was made for more transport effieciency. Some features are:
 
-* pipelining (parallel requests)
-* multiplexing (handling requests on one connection)
+* pipelining (allows multiple requests to be recieved on one connection)
+* multiplexing (sending requests in parallel)
     * this saves setup/breakdown time of each connection made
 * compression of headers
 * server push (the server pushes various resources to the browser even when not requested)
