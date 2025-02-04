@@ -441,7 +441,7 @@ Like XML, it is a textual representation of a tree. You can represent DOMs in JS
 
 ## Node.js
 
-`Node.js` is a Javascriopt runtime for asynchronous events. It is event-driven programming.
+`Node.js` is a Javascript runtime for asynchronous events. It is event-driven programming.
 
 In the Node Library, it waits for events and handles the events:
 
