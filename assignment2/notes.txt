@@ -1,0 +1,61 @@
+1. (* (expt 2 (- 607 1)) (- (expt 2 607) 1))
+	Result:
+1410537837067120690632079580860631898814867435147156678388386759999548677426523801141041933290376902515619505687098293271640877243663700871167312681593136524874506524398058772962072974467232951666582288469268\
+07786652870188920867879451478364569313922060370695064736073572378695176473055266826253284886383715072974324463835300053138429460296575143368065570759537328128
+
+
+2. (+ (floor (log (* (expt 2 (- 607 1)) (- (expt 2 607) 1)) 2)) 1) gives an overflow error. 
+
+(+ 607 (floor (log (- (expt 2 607) 1) 2))) 
+There are 1214 bits if it was expressed in binary.
+
+3. C-h k C-h k shows the documentation for the command describe key. It displays the documentation of functions.
+
+4. C-h k M-SPC shows the documentation of the command cycle-spacing command.
+
+5. M-SPC or ESC-SPC runs the command cycle spacing. It manipulates white space in a smart way. From experimenting, it gets rid of extra white space in between words.
+
+6. When my shuf.py script is ran with python2, it behaves the same way as when called with python3. shuf.py is ran as intended.
+
+7.  Benchmark Results:
+median of sum of usr and sys times:
+GNU shuf: 0.065s
+/usr/local/cs/bin/python3: 0.749s
+/usr/bin/python3: 0.742s
+
+SEASnet host details: 
+Architecture:            x86_64
+  CPU op-mode(s):        32-bit, 64-bit
+  Address sizes:         44 bits physical, 48 bits virtual
+  Byte Order:            Little Endian
+CPU(s):                  4
+  On-line CPU(s) list:   0-3
+Vendor ID:               GenuineIntel
+  Model name:            Intel(R) Xeon(R) Silver 4116 CPU @ 2.10GHz
+    CPU family:          6
+    Model:               85
+    Thread(s) per core:  1
+    Core(s) per socket:  4
+    Socket(s):           1
+    Stepping:            4
+    BogoMIPS:            4190.15
+
+OS details:
+NAME="Red Hat Enterprise Linux"
+VERSION="9.5 (Plow)"
+ID="rhel"
+ID_LIKE="fedora"
+VERSION_ID="9.5"
+PLATFORM_ID="platform:el9"
+PRETTY_NAME="Red Hat Enterprise Linux 9.5 (Plow)"
+ANSI_COLOR="0;31"
+LOGO="fedora-logo-icon"
+CPE_NAME="cpe:/o:redhat:enterprise_linux:9::baseos"
+HOME_URL="https://www.redhat.com/"
+DOCUMENTATION_URL="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9"
+BUG_REPORT_URL="https://issues.redhat.com/"
+
+REDHAT_BUGZILLA_PRODUCT="Red Hat Enterprise Linux 9"
+REDHAT_BUGZILLA_PRODUCT_VERSION=9.5
+REDHAT_SUPPORT_PRODUCT="Red Hat Enterprise Linux"
+REDHAT_SUPPORT_PRODUCT_VERSION="9.5"
