@@ -522,3 +522,216 @@ Problem: There is a client server relationship between LA and Tokyo. If it alway
 a. The best case is 0 seconds, where the cache never needs to be updated because it matches the packet recieved. The worst case scenario is 1 second + $\frac{128}{2}$ milisecond = 1.064 seconds for the packet to update in Tokyo.
 
 b. The worst case that the cache is updated correctly over its lifetime is infinite time. This can happen because UDP can keep dropping packets and the cache is never updated correctly.
+
+Event handling is not multithreaded. Each handler has control of a program. The downside to this is that there is no prallelism(single core) but you gain reliabiliity. Additionally, no locks are needed on the RAM. 
+
+`Multi-threading` multiple CPUs running the same program. Programs step on the same RAM and bugs happen. We do not want this in our client-server application.
+
+```mermaid
+    graph TB
+        subgraph Processes
+            P1
+            P2
+            P3
+            P4
+        end
+        P1 --> RAM
+        P2 --> RAM
+        P3 --> RAM
+        P4 --> RAM
+        program --> RAM
+        style P1 fill:#904
+        style P2 fill:#904
+        style P3 fill:#904
+        style P4 fill:#904
+        style program fill:#407
+        style RAM fill:#039
+        comment@{shape: braces, label: "this needs a lock to prevent parts of memory from being altered while another process is using it"} ---> RAM
+```
+
+Embedded Systems does these things:
+
+* monitor battery
+* looking for user requests
+* getting server responses
+
+Multi-threading to scale: you can add cores(CPUs), but there will be a limit on how many processors you can put on a single CPU chip.
+
+Node.js to scale: you can increase the number of servers which will allow your application to handle larger amounts of data, user traffic, or other processing tasks.
+
+Event Driven Apps:
+
+* Node.js
+* Python
+    * asyncio
+    * Twisted
+* Ruby
+    * event machine
+
+### Common uses of Node: Web Servers
+
+* JS version issues are less
+    * you can specify which JS version you want
+    * there are fewer portability issues
+
+issue:
+
+* where to draw line for running code on client or server side
+* which libraries/packages to use
+
+```js
+// app.js
+const http = require('http');
+const ipaddr = '127.0.0.1';
+const port = 3000;          // In the range from 0 to (2^16 - 1)
+const server = http.createServer(
+    (request,response) => {
+        response.statusCode = 200;  // status code 200 means request successfully processed
+        response.setHeader('Content-Type','text/plain');
+        response.end('This is just a toy server.\n');
+    })
+server.listen(port,ipaddr, ()=> {console.log('Server at http://${ipaddr}:${port}/')})
+```
+
+Round Robin DNS
+
+* If there is a high load, for example, the domain `www.cs.ucla.edu` will have multiple instances of Node to handle multiple requests. each one will have its own IP address.
+
+## Node.js packages (there are many by 3rd parties)
+
+Managing packages is a real problem.
+
+`npm` Node Package Manager
+
+* package.json
+    * contains metadata about
+        * name
+        * author
+        * description
+    * contains packages adn apps your project needs
+        * dependencies (needed to run), contains package names and versions
+        * devDependencies (needed to develop)
+    * contains version control info
+
+`npm init` creates a new project
+
+`npm install MODULE` installs a certain package
+
+`npm install` installs all dependencies in the package.json file
+
+`npm install --save MODULE` saves the module into the package.json file
+
+### Version Numbering
+
+Example: `5.2.7` < `5.2.10`
+
+* when the first number is changed, there is a huge change. Some features may be withdrawed or changed.
+* the second number is incremented when features are added. This also resets the last number.
+* the third number is incremented when there are bug fixes.
+
+The number changed is based on the compatibility of features with previous versions. Normally, the first number is changed if the new version is not compatible with programs that work on the old version.
+
+## Character Encoding
+
+Problem of representing text in computers and on networks.
+
+Originally, the list of characters was a small list of `64` characters. These could be represented in `2^6` ways or a `6 bit character encoding`. Each word was seperated into 6 bytes comprised of 6 bits each.
+
+This was an IBM system 360, with `byte addressable memory`.
+
+Later on a list of `258` or  `2^8` characters was needed. This was done through `8 bit encoding`. This is similar to 6 bit encoding except there was 8 bits per byte and 8 bytes per word. The character set was called `EBCDIC` or `Extended Binary Coded Decimal Interchange Code`.
+
+### ASCII
+
+`ASCII` is a 7 bit character set using 8 bit bytes. The highest order bit is the parity bit.
+
+* 128 code points of which 95 are printable
+* `0 to 31` are control characters
+* `32 to 126` are printable characters
+* `127` is the DEL character
+
+### Extensions of ASCII for other languages: (256 bit character sets)
+
+* `ISC/IEC 8859-1` Latin-1 for Western Europe
+* `ISC/IEC 8859-2` Latin-2 for Eastern Europe
+* `ISC/IEC 8859-3` Latin-3 for Southern Europe
+* `ISC/IEC 8859-4` Latin-4 for Northern Europe
+* `ISC/IEC 8859-15` Latin-9 (Latin-1 + €) basically Latin-1 but support for most European languages.
+
+```js
+// Protocol Header:
+    Content-Type: text/plain; charset=iso8859-6     // default was Latin-1
+```
+
+### Dealing with more than 256 characters
+
+Let's take a look at `2^16` characters. Microsoft tried to do `2 bytes per character` with a total of `16 bits`. Most companies were not a fan of this.
+
+Instead, a variable length encoding for characters was adopted.
+
+```
+multibyte                  | |         payload          |       2^15 characters for payload
+
+single byte characters     | |  payload |       2^7 characters for payload
+ASCII (7 bit each)
+```
+
+### Microsoft Shift JIS (Japan) vs. EUC Extended Unix Code
+
+`Microsoft Shift JIS` was Microsoft's attempt at variable length encoding. However this was not backwards compatible. For example if you were searching for a certain character, the search will break when it recognizes the first half of a multibyte for a different character.
+
+`Unicode` a single set of code points for all languages. There are about 150,000 characters supported on Unicode. Unicode was originally 16 bits, `UTF-16`, Unicode Transformation Format with multi(2 byte) encoding.
+
+`UTF-8` the most common on the internet (95%)
+
+* `0 to 127` was ASCII
+* `128 to 255` was ISO 8859-1
+
+```mermaid
+    graph LR
+        subgraph bytes
+            0...
+        end
+        comment@{shape: braces, label: "U+0000 - U+007F"} ---> bytes
+    style 0... fill:#950
+```
+
+```mermaid
+    graph LR
+        subgraph bytes
+            direction LR
+            a@{label: "1 1 0..."} --> b@{label: "1 0..."}
+        end
+        comment@{shape: braces, label: "U+0080 - U+07FF"} ---> bytes
+    style a fill:#950
+    style b fill:#950
+```
+
+```mermaid
+    graph LR
+        subgraph bytes
+            direction LR
+            a@{label: "1 1 1 0..."} --> b@{label: "1 0..."} --> c@{label: "1 0..."}
+        end
+        comment@{shape: braces, label: "U+0800 - U+FFFF"} ---> bytes
+    style a fill:#950
+    style b fill:#950
+    style c fill:#950
+```
+
+```mermaid
+    graph LR
+        subgraph bytes
+            direction LR
+            a@{label: "1 1 1 1..."} --> b@{label: "1 0..."} --> c@{label: "1 0..."} --> d@{label: "1 0..."}
+        end
+        comment@{shape: braces, label: "U+10000 - U+10FFFF"} ---> bytes
+    style a fill:#950
+    style b fill:#950
+    style c fill:#950
+    style d fill:#950
+```
+
+To get the next character in a search, just skip bytes that starts with a `1` and `0`.
+
+Suppose an input byte: `11111010`. This is not a valid UTF-8 byte, so it is an encoding error.
