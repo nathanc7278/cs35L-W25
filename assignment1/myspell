@@ -1,0 +1,5 @@
+#!/bin/bash
+chars=$(grep -o . /usr/share/dict/linux.words | sort -u | tr -d '\n')
+sort -u </usr/share/dict/linux.words > sorted.words
+cat $1 | tr -cs $chars '\n' | sort -u | comm -23 -  sorted.words
+rm sorted.words
