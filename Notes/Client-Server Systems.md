@@ -723,7 +723,7 @@ ASCII (7 bit each)
     graph LR
         subgraph bytes
             direction LR
-            a@{label: "1 1 1 1..."} --> b@{label: "1 0..."} --> c@{label: "1 0..."} --> d@{label: "1 0..."}
+            a@{label: "1 1 1 1 0..."} --> b@{label: "1 0..."} --> c@{label: "1 0..."} --> d@{label: "1 0..."}
         end
         comment@{shape: braces, label: "U+10000 - U+10FFFF"} ---> bytes
     style a fill:#950
