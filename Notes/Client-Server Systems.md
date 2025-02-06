@@ -734,4 +734,3 @@ ASCII (7 bit each)
 
 To get the next character in a search, just skip bytes that starts with a `1` and `0`.
 
-Suppose an input byte: `11111010`. This is not a valid UTF-8 byte, so it is an encoding error.
