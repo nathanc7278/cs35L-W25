@@ -163,6 +163,8 @@ The right part of the packet is the info that is being transmitted.
     * length
     * protocol number
     * source and destination address (32 bits each. Ex: 192.54.239.12. Each decimal between the periods is a byte)
+          * local IP addresses are used for communication on your own network. For example Localhost (127.0.0.1) is a private IP address to start a react app in.
+          * public IP addressses are the way for you to connect to the internet. public IP addresses are assigned by your internet service provider (192.54.239.12).
     * `TTL` time to live or hop count. Each time a packet is transmitted this gets decremented. When it is0, the packet is ignored
     * checksum (16 bit) deals with hardware errors.
 
