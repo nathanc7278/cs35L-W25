@@ -159,3 +159,58 @@ Mutable Sequences:
 ### List Operations:
 
 `s.append(v)` appends `v` to the end of a list. This operation is `O(1) amortized`. When n = space alloced, append asks for more memory so the list copies itself to memory that has 2x the current memory.
+
+## Python Mapping types
+
+`m[k]` where `k` does not need to be integer, accesses the element of a map. `k` is an immutable key.
+
+`d = {}` initiallizes an empty dictionary.
+
+`d = {'a':1, 'b':3, 'z':-3}` initializes the dictionary with different keys and values.
+
+`d['abc'] = 27` sets the value of the dictionary at key `'abc'` to 27
+
+`len(d)` shows how many items are in the dictionary
+
+`d.clear()` removes every item in dictionary
+
+`d = d'` creates the shallowest copy of a dictionary. Simply points `d` to `d'`
+
+`d.copy(d')` creates a shallow copy of the dictionary itself, with each object inside the dictionary `d` as pointers to the elements in `d'`
+
+`d.deepcopy(d')` creates a deep copy of the dictionary `d'`
+
+`d.items()` gives the list of items
+
+`d.keys()` gives the list of keys
+
+`d.values()` gives the list of values
+
+`d.update(d')` modify `d` by taking every value in `d'` and overwriting values of `d` that exist or adding them to `d` if they do not exist
+
+`d.get(k[,v])` gets the value `k` or gives the default value `v` if it is not in the dictionary. if v is ommited in the arguments, it returns `None` if `k` is not found.
+
+`del d[k]` deltes an item from `d`
+
+The dictionary order in Python is the same as insertion order.
+
+`d.popitem()` removes and returns the most recently added key-value pair
+
+## Callable types
+
+Functions are callable objects
+
+```python
+    f(a,b,c)
+    # f is a callable type
+
+    f = lambda a,b: a+b*b
+
+    # is equivalent to:
+
+    def f(a,b):
+        return a+b*b
+
+    g = f
+    # g(3,9) is equivalent to f(3,9)
+```
