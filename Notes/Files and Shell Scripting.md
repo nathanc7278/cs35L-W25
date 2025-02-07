@@ -172,6 +172,17 @@ Redirection operators take input from streams and outputs to other streams.
 ```
 This makes stream 2 point to the same thing at stream 1. 
 
+```
+	(echo "a" && ./doesnotexist) 2>&1 1>&2
+```
+This runs the echo command. If the command on the left of `&&` is truthy, it does the right command. stream 2 points to stream 1. Then stream 1 points to stream 2, which is already stream 1. All of the echo and error statements get put into standard output. The redirection operators are sequential and are like Python assignments.
+
+```
+	stream2 = stream1
+	stream1 = stream2
+```
+
+
 Aditionally pipe, `|`, makes commands run in parallel as opposed to `;` which makes commands run sequentially.
 
 `$?` stands for the exit status of the most recently called command.
