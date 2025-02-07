@@ -101,6 +101,10 @@ For a function to run with `M-x` you need to include `(interactive)`.
 
 The `n` prompts the user for an integer.
 
+`%d` stands for substitute a decimal
+
+`%s` stands for substitute a string
+
 ## Python:
 
 Every value in Python is an object. Every Python object has three things:
