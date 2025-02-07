@@ -153,6 +153,8 @@ Each instance of a shell is a a seperate process with its own data, input/output
 
 `while [condition]; do 'commands'; done` while loop
 
+`if [condition]; then 'commands'; fi`
+
 `case 'i' in 'condition') 'command';; ... esac` uses globbing
 
 `exit n` quit the script and return an exit code of `n`
