@@ -149,13 +149,34 @@ Each instance of a shell is a a seperate process with its own data, input/output
 
 `{}`
 
-`for 'i' in 'number'; do 'command'; done` for loop
+```
+for 'i' in 'number'; do
+    'command'
+done
+```
 
-`while [condition]; do 'commands'; done` while loop
+```
+while [condition]; do
+    'commands'
+done
+```
 
-`if [condition]; then 'commands'; fi`
+```
+if [condition]; then
+     'commands'
+fi
+```
 
-`case 'i' in 'condition') 'command';; ... esac` uses globbing
+```
+case 'i' in
+    'condition')
+        'command';;
+    'condition')
+        'command';;
+    *)
+        'command;;
+esac
+```
 
 `exit n` quit the script and return an exit code of `n`
 
