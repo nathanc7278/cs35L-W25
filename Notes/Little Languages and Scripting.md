@@ -105,7 +105,7 @@ If a file name starts with `/` it's absolute: you start at the root directory to
 
 ### BREs are like EREs, except:
 
-* `?+{|()}` los special meaning; they are ordinary. You can escape the characters as substitutes: `\{`, `\}`, `\(`, `\)` are substitutes for `{}()`
+* `?+{|()}` lose special meaning; they are ordinary. You can escape the characters as substitutes: `\{`, `\}`, `\(`, `\)` are substitutes for `{}()`
 * `\2` matches the same string that the 2nd paranthesis matches
 
 #### Regular Expression(R.E) is a little program:
