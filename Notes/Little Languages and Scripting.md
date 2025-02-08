@@ -150,31 +150,39 @@ Each instance of a shell is a a seperate process with its own data, input/output
 `{}`
 
 ```
+get_name() {
+   echo "john"
+}
+```
+
+```
 for 'i' in 'number'; do
-    'command'
+   'command'
 done
 ```
 
 ```
 while [condition]; do
-    'commands'
+   'commands'
 done
 ```
 
 ```
-if [condition]; then
-     'commands'
+if [[ condition ]]; then
+   'commands'
+elif [[ condition ]]; then
+   'commands'
 fi
 ```
 
 ```
 case 'i' in
-    'condition')
-        'command';;
-    'condition')
-        'command';;
-    *)
-        'command;;
+   'condition')
+      'command';;
+   'condition')
+      'command';;
+   *)
+      'command;;
 esac
 ```
 
