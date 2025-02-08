@@ -110,7 +110,7 @@ The following must use the `-P` option for perl compatible regex
 
 * `?+{|()}` lose special meaning; they are ordinary. You can escape the characters as substitutes: `\{`, `\}`, `\(`, `\)` are substitutes for `{}()`
 * `\1` is a backreference to the first pattern matched
-     * `grep -E "(abc) x \1` will match `abc x abc`
+     * `grep -E "(abc) x \1"` will match `abc x abc`
 
 #### Regular Expression(R.E) is a little program:
 
