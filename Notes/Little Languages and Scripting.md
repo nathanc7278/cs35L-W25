@@ -156,7 +156,7 @@ get_name() {
 ```
 
 ```
-for 'i' in 'number'; do
+for ((i=0; i<$1; i++)); do
    'command'
 done
 ```
