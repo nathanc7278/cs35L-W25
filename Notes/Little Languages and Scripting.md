@@ -54,6 +54,7 @@ If a file name starts with `/` it's absolute: you start at the root directory to
 * Fixed string `grep -F`
 * Ordinary `grep` - basic regular expressions `BREs`
 * Extended `grep -E` - extended regular expressions `EREs`
+* `-o` option prints the only matched regex on newlines
 
 ### EREs:
 
