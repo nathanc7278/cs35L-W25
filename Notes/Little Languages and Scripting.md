@@ -93,6 +93,8 @@ If a file name starts with `/` it's absolute: you start at the root directory to
 
 `P$` matches only at the end of the line
 
+The following must use the `-P` option for perl compatible regex
+
 `?=P` positive lookahead, matches if the pattern `P` occurs ahead in the line.
 
 `?!P` negative lookahead, matches if the pattern `P` does not occur ahead in the line.
