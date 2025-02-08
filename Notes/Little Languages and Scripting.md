@@ -176,6 +176,7 @@ else
    'commands'
 fi
 ```
+if statements enter the block if the condition is an exit code of 0.
 
 ```
 case 'i' in
