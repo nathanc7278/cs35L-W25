@@ -39,6 +39,8 @@ This is a special form, `(defun f (a b c) ("code involving a b c"))`
 
 * additionally the keystroke can also be `(kbd "C-x C-a")` to change a keybind to C-x C-a without escaping the control characters.
 
+To edit a configuration file: we enter the `~/.emacs.d/init.el` and enter any commands that we want to change.
+
 `C-]` closes the debugger in Lisp.
 
 `(quote (1 2 3))` quote is a special form. It is the same as `'(1 2 3)`
