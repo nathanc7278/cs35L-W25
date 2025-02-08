@@ -99,7 +99,7 @@ If a file name starts with `/` it's absolute: you start at the root directory to
 
 `?<=P` positive lookbehind, matches if the pattern `P` occurs behind in the line.
 
-`?<!P` negative lookahead, matches if the pattern `P` does not occur ahead in the line.
+`?<!P` negative lookbehind, matches if the pattern `P` does not occur ahead in the line.
 
 **Distributive Law:** `P(Q|R) == (PQ|PR)`
 
