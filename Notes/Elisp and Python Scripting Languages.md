@@ -84,11 +84,10 @@ convert (3 + 2 * 5 > 0 && 7 < 3 / 5) to elisp
 ```lisp
 (defun is-line-number-even ()
     (interactive)
-        (let (line (line-number-at-pos (point)))
+        (setq line (line-number-at-pos))
             (if (= (mod line 2) 0)
                 (message "Line %d is even" line)
                 (message "Line %d is odd" line))
-        )
 )
 ```
 
