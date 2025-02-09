@@ -226,3 +226,13 @@ Functions are callable objects
     g = f
     # g(3,9) is equivalent to f(3,9)
 ```
+
+```python
+#!/usr/bin/env python3
+import random
+
+def shuf(x):
+    for i in x:
+        random.shuffle(i)
+    random.shuffle(x)
+```
