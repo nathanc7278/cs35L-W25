@@ -146,8 +146,6 @@ The following operations make a copy of a sequence:
 * `s[:j]` accesses from beginning to `j` of the sequence.
 * `s[:]` the whole sequence
 
-Example:
-
 X = s[], if you change X, s[] will also change.
 
 Y = s[:], if you change Y, s[] will not change.
@@ -159,6 +157,17 @@ Y = s[:], if you change Y, s[] will not change.
 `max(s)` returns maximum
 
 `list(s)` turns any sequence into a list
+
+`'delimiter'.join(sequence)` join combines any iterable object(string, dictionary, list) into a string with delimiters in between
+
+`sorted(sequence, key, reverse)` sorts the an iterable object 
+
+```python
+    a = ("Jenifer", "Sally", "Jane")
+    sorted(a, key=len) # Jane, Sally, Jenifer
+    sorted(a, key=len, reverse=True) # Jenifer, Sally, Jane
+```
+`strip("optional")` removes leading and trailing whitespace and the optional characters that are passed as arguments. 
 
 Mutable Sequences:
 
