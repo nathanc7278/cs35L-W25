@@ -167,7 +167,13 @@ Y = s[:], if you change Y, s[] will not change.
     sorted(a, key=len) # Jane, Sally, Jenifer
     sorted(a, key=len, reverse=True) # Jenifer, Sally, Jane
 ```
+
 `strip("optional")` removes leading and trailing whitespace and the optional characters that are passed as arguments. 
+
+```
+    txt = ',,,,,rrrtttgg....banana...rrr"
+    txt.strip(",.grt") # results in "banana"
+```
 
 Mutable Sequences:
 
