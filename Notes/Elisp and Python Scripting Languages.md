@@ -342,7 +342,7 @@ most modules that are called in top level have this at the bottom of the code:
 
 ```python
     if __name__ == '__main__':
-        # look at args
+        main()
 ```
 
 ```python
