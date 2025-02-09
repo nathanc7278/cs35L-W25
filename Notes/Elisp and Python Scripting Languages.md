@@ -100,7 +100,7 @@ For a function to run with `M-x` you need to include `(interactive)`.
 )
 ```
 
-The `n` prompts the user for an integer.
+The `n` in interactive prompts the user for an integer. Similarly a `b` will prompt for a buffer.
 
 `%d` stands for substitute a decimal
 
