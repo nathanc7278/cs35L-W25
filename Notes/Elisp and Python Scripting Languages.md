@@ -106,6 +106,13 @@ The `n` in interactive prompts the user for an integer. Similarly a `b` will pro
 
 `%s` stands for substitute a string
 
+```
+(save-excursion
+    stuff
+)
+``` 
+`save-excursion` prevents the cursor from moving when doing commands within the block
+
 ## Python:
 
 Every value in Python is an object. Every Python object has three things:
