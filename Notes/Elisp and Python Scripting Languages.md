@@ -236,3 +236,131 @@ def shuf(x):
         random.shuffle(i)
     random.shuffle(x)
 ```
+
+## Python Mapping types
+
+`m[k]` where `k` does not need to be integer, accesses the element of a map. `k` is an immutable key.
+
+`d = {}` initiallizes an empty dictionary.
+
+`d = {'a':1, 'b':3, 'z':-3}` initializes the dictionary with different keys and values.
+
+`d['abc'] = 27` sets the value of the dictionary at key `'abc'` to 27
+
+`len(d)` shows how many items are in the dictionary
+
+`d.clear()` removes every item in dictionary
+
+`d = d'` creates the shallowest copy of a dictionary. Simply points `d` to `d'`
+
+`d.copy(d')` creates a shallow copy of the dictionary itself, with each object inside the dictionary `d` as pointers to the elements in `d'`
+
+`d.deepcopy(d')` creates a deep copy of the dictionary `d'`
+
+`d.items()` gives the list of items
+
+`d.keys()` gives the list of keys
+
+`d.values()` gives the list of values
+
+`d.update(d')` modify `d` by taking every value in `d'` and overwriting values of `d` that exist or adding them to `d` if they do not exist
+
+`d.get(k[,v])` gets the value `k` or gives the default value `v` if it is not in the dictionary. if v is ommited in the arguments, it returns `None` if `k` is not found.
+
+`del d[k]` deltes an item from `d`
+
+The dictionary order in Python is the same as insertion order.
+
+`d.popitem()` removes and returns the most recently added key-value pair
+
+## Callable types
+
+Functions are callable objects
+
+```python
+    f(a,b,c)
+    # f is a callable type
+
+    f = lambda a,b: a+b*b
+
+    # is equivalent to:
+
+    def f(a,b):
+        return a+b*b
+
+    g = f
+    # g(3,9) is equivalent to f(3,9)
+```
+
+```python
+    def f(a, *b, **c):
+    # *b takes 0 or more args
+    # **c creates a dictionary of arguments
+```
+
+```python
+    arctan(x=0, y=0)
+    # you can specify which variable gets what value if you forget the order
+```
+
+```python
+    class c(a,b):
+        def m(self, other):
+            ...
+
+    class d(c)
+
+    # if you call d.m() it will look for m depth first from left argument to right
+```
+
+### namespaces in Python
+
+A `class` is an object
+
+* it has a member `__dict__` 
+    * the dictionary contains its names
+* by convention `__"anything"__` names a `private` to Python
+
+``` python
+class c:
+    def __init__(self, name):
+        self.name = name
+    def __del__(self):
+        ...
+    def __repr__(self):     # full representation
+        ...
+    def __str__(self):
+        ...
+    def __cmp__(self, other):
+        ...
+    def __nonzero__(self):
+```
+
+## Python modules:
+
+most modules that are called in top level have this at the bottom of the code:
+
+```python
+    if __name__ == '__main__':
+        # look at args
+```
+
+```python
+    import foo # this is a runtime object
+```
+
+`Importing` is called at runtime, so it can be called anywhere in the code.
+
+To execute the import statement:
+
+1. create a new namespace
+2. read from `foo.py`, execute that in a new namespace
+3. bind `foo` to this namespace (in the invoker's namespace)
+
+## Python Packages
+
+packages contain modules
+
+`PYTHONPATH=/home/eggert/python:/home/millstein/py:/usr/local/cs/python3.11`
+
+When calling a command, it will look through each path that is delimited by colons from left to right.
