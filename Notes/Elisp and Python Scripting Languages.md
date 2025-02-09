@@ -313,7 +313,7 @@ Functions are callable objects
     # if you call d.m() it will look for m depth first from left argument to right
 ```
 
-### namespaces in Python
+### Namespaces in Python
 
 A `class` is an object
 
