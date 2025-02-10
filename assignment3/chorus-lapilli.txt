@@ -1,0 +1,387 @@
+1. cd into /assignment3:
+
+npm create vite@latest chorus-lapilli --template react
+
+cd into /assignment3/chorus-lapilli and do npm install. Now edit chorus-lapilli.jsx and main.jsx to match the imports.
+
+2. include the following import statement
+
+import { useState } from 'react';
+
+3. create a function called Square to create the board:
+
+import { useState } from 'react';
+
+function Square({ value, onSquareClick }) {
+  return (
+    <button className="square" onClick={onSquareClick}>
+      {value}
+    </button>
+  );
+}
+
+4. initialize the following global variables:
+
+let count = 0;
+let prevClick = null;
+let move;
+
+count is used to make sure there is 3 of each piece on the board at a time.
+
+prevClick is used to move previous positions to new ones.
+
+move is used as a way to notify a user what they are doing. for example:
+
+move = 'Canceled Selection'; would mean that the user selected a piece and decided to not move it. 
+
+5. We will start with the following sample code. This is very similar to tic-tac-toe:
+
+export default function Board() {
+	const [xIsNext, setXIsNext] = useState(true);
+	const [squares, setSquares] = useState(Array(9).fill(null));
+	
+	const winner = calculateWinner(squares);
+	let status;
+	if (winner) {
+		status = 'Winner: ' + winner;
+	} else {
+		if (xIsNext) {
+			status = 'Next player: X';
+		} else {
+			status = 'Next player: O';
+		}
+	}
+
+	return (
+		<>
+		<div className="status">{status}</div>
+		<div className="board-row">
+			<Square value={squares[0]} onSquareClick={() => handleClick(0)} />
+			<Square value={squares[1]} onSquareClick={() => handleClick(1)} />
+			<Square value={squares[2]} onSquareClick={() => handleClick(2)} />
+		</div>
+		<div className="board-row">
+			<Square value={squares[3]} onSquareClick={() => handleClick(3)} />
+			<Square value={squares[4]} onSquareClick={() => handleClick(4)} />
+			<Square value={squares[5]} onSquareClick={() => handleClick(5)} />
+		</div>
+		<div className="board-row">
+			<Square value={squares[6]} onSquareClick={() => handleClick(6)} />
+			<Square value={squares[7]} onSquareClick={() => handleClick(7)} />
+			<Square value={squares[8]} onSquareClick={() => handleClick(8)} />
+		</div>
+		<div className="move">{move}</div>
+		<button onClick={() => resetBoard(squares)}>Reset Board</button>
+		</>
+
+	);
+}
+
+The only things we have changed here is adding the move string and a button to reset the board in the return statement.
+
+6. Next we will create the getAdjacent(i) and isAdjacent(i, prevClick) functions. These are used to determine if a move is possible based on our selection.
+
+getAdjacent(i) takes an input index i, and returns an array of all possible adjacent moves.
+
+function getAdjacent(i) {
+	const adjacent = [
+		[1, 3, 4],
+		[0, 2, 3, 4, 5],
+		[1, 4, 5],
+		[0, 1, 4, 6, 7],
+		[0, 1, 2, 3, 5, 6, 7, 8],
+		[1, 2, 4, 7, 8],
+		[3, 4, 7],
+		[3, 4, 5, 6, 8],
+		[4, 5, 7]
+	];
+	return adjacent[i];
+}
+
+isAdjacent(i, prevClick) will call getAdjacent(i) to see if two boxes in the grid are adjacent to each other. It will return true, if they are adjacent and false if they are not.
+
+function isAdjacent(i, prevClick) {
+	const adjacent = getAdjacent(prevClick);
+	for (let j = 0; j < adjacent.length; j++) {
+		if (adjacent[j] === i) {
+			return true;
+		}
+	}
+	return false;
+}
+
+7. The next functions we add are used to determine if there is a winner or a winning move
+
+function calculateWinner(squares) {
+	const lines = [
+		[0, 1, 2],
+		[3, 4, 5],
+		[6, 7, 8],
+		[0, 3, 6],
+		[1, 4, 7],
+		[2, 5, 8],
+		[0, 4, 8],
+		[2, 4, 6],
+  	];
+  	for (let i = 0; i < lines.length; i++) {
+    	const [a, b, c] = lines[i];
+    	if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      		return squares[a];
+    	}
+  	}
+  	return null;
+}
+
+function calculateWinningMoves(i, squares) {
+	let adjacent = getAdjacent(i);
+	for (let j = 0; j < adjacent.length; j++) {
+		if (squares[adjacent[j]] === null) {
+			const possibleWin = squares.slice();
+			possibleWin[adjacent[j]] = possibleWin[i];
+			possibleWin[i] = null;
+			if (calculateWinner(possibleWin) != null) {
+				return adjacent[j];
+			}
+		} 	
+	}
+	return false;
+}
+
+calculate winner is the same as it was in tic-tac-toe. calculateWinningMoves(i, square) checks adjacent squares from the currently selected box and sees if there is a winner if that box was selected. If there is a possible winner, it will return true, otherwise it will return null.
+
+8. Before the return statement in the add the following lines:
+
+	const winner = calculateWinner(squares);
+	let status;
+	if (winner) {
+		status = 'Winner: ' + winner;
+	} else {
+		if (xIsNext) {
+			status = 'Next player: X';
+		} else {
+			status = 'Next player: O';
+		}
+	}
+
+	function resetBoard(squares) {
+		const empty = squares.slice()
+		for (let i = 0; i < squares.length; i++) {
+			empty[i] = null;
+		}
+		prevClick = null;
+		count = 0;
+		setXIsNext(true);
+		setSquares(empty);
+	}
+
+The first part determines if there is a winner. If there is no winner it will just display which player's move is next. The new part of the code is to reset the board It set all of the squares on the board to null if the Reset Board button is clicked.
+
+9. The bulk of our code will be handling the clicks of the user inside the function handleClick(i). 
+
+const nextSquares = squares.slice();
+		if (count < 6 && squares[i]) {
+			return;
+		} 
+		if (calculateWinner(squares)) {
+			return;
+		}
+		if (prevClick != null && prevClick === i) {
+			prevClick = null;
+			move = 'Canceled Selection';
+		} else if (prevClick != null && squares[i]) {
+			return;
+		}
+
+This is the initial checks of the board's condition. If there are less than 6 pieces on the board, it will check if the there is a winner or if the selected square already has a piece in it. If it is true it will just exit the function.
+
+The second conditional statement checks if the prevClick is null. prevClick is a variable that gets set to a value when the user selects a square, if no square is selected it is set to null. So if the current selected box is equal to the current click, then we will cancel the selection because we cannot move to the same square in one move.
+
+The third conditional checks if a square is selected and if the currect click is not an empty square. If this happens we just return because we cannot move a piece to a square with a piece in it already.
+
+10. The next conditional statement is continued from our previous 3. 
+ 
+		else if (count >= 6 && xIsNext) {
+			if (nextSquares[i] === 'X' && prevClick === null) {
+				winningMove = calculateWinningMoves(i, nextSquares);
+				prevClick = i;
+				move = 'X is selected at grid number: ' + i;
+
+			} else if (i !== 4 && nextSquares[4] === 'X') {
+				if (prevClick !== null && (winningMove === i || prevClick === 4)) {
+					nextSquares[i] = 'X';
+					nextSquares[prevClick] = null;
+					prevClick = null;
+					setXIsNext(!xIsNext);
+					move = 'X is moved to grid number: ' + i;
+				} else {
+					prevClick = null;
+					move = 'Not a winning move, you must move the center X'
+				}
+			} else if (prevClick != null && isAdjacent(i, prevClick)) {
+				nextSquares[i] = 'X';
+				nextSquares[prevClick] = null;
+				prevClick = null;
+				setXIsNext(!xIsNext);
+				move = 'X is moved to grid number: ' + i;
+			} else {
+				prevClick = null;
+				move = 'Invalid Move';
+			}
+		}
+
+
+This conditional statement is only entered when it is X's move and there is more than 6 pieces already on the board. If the click is on a square with an X and there is no currently selected square, then it will do the following:
+	It will calculate the winningMove of the current click. Then it will select the current grid number.
+	
+	If there is a piece selected it will:
+If the middle piece is not selected and it is currently occupied with an X, it will check if the next move is the winning move. If it is, it will move the piece to that grid number. Otherwise it will unselect the grid number.
+
+	If there is no X in the middle, we will do a normal move operation by checking if the current click is adjacent to the previous click. It will then move the piece if it is. Otherwise it will not move.
+
+This is exactly the same for the O's turn:
+
+ 		else if (count >= 6 && !xIsNext) {
+			if (nextSquares[i] === 'O' && prevClick === null) {
+				winningMove = calculateWinningMoves(i, nextSquares);
+				prevClick = i;
+				move = 'O is selected at grid number: ' + i;
+
+			} else if (i !== 4 && nextSquares[4] === 'O') {
+				if (prevClick !== null && (winningMove === i || prevClick === 4)) {
+					nextSquares[i] = 'O';
+					nextSquares[prevClick] = null;
+					prevClick = null;
+					setXIsNext(!xIsNext);
+					move = 'O is moved to grid number: ' + i;
+				} else {
+					prevClick = null;
+					move = 'Not a winning move, you must move the center O'
+				}
+			} else if (prevClick !== null && isAdjacent(i, prevClick)) {
+				nextSquares[i] = 'O';
+				nextSquares[prevClick] = null;
+				prevClick = null;
+				setXIsNext(!xIsNext);
+				move = 'O is moved to grid number: ' + i;
+			} else {
+				prevClick = null;
+				move = 'Invalid Move';
+			}
+		}
+
+
+11. Our last conditional is added incase the count is not greater or equal to 6:
+
+		else {
+			if (xIsNext) {
+				nextSquares[i] = 'X';
+			} else {
+				nextSquares[i] = 'O';
+			}
+			setXIsNext(!xIsNext);
+			count++;
+		}
+
+This is like how the regular tic-tac-toe is implemented. We increment count at the end to make sure only 6 pieces are placed.
+
+12. Lsatly we update squares by doing: 	setSquares(nextSquares);
+
+
+
+13. Testing using test harnesses. Inside command prompt:
+
+python -m venv . 
+
+python -m venv venv
+
+venv\Scripts\activate.bat
+
+pip install selenium
+
+This sets up a virtual environment in cmd.
+
+python ./test_chorus_lapilli.py -c ./cs35L/assignment3/chorus-lapilli -b chrome
+
+If it doesn't work change the test_chorus_lapilli.py file to match the localhost. I changed it to http://localhost:5173. Make sure to do npm run dev before running the test harness.
+
+
+14. Adding a test case for if we can add pieces after there is a winner:
+
+def test_check_winner(self):
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        self.assertTileIs(tiles[0], self.SYMBOL_BLANK)
+        tiles[0].click()
+        self.assertTileIs(tiles[0], self.SYMBOL_X)
+        self.assertTileIs(tiles[3], self.SYMBOL_BLANK)
+        tiles[3].click()
+        self.assertTileIs(tiles[3], self.SYMBOL_O)
+        self.assertTileIs(tiles[1], self.SYMBOL_BLANK)
+        tiles[1].click()
+        self.assertTileIs(tiles[1], self.SYMBOL_X)
+        self.assertTileIs(tiles[4], self.SYMBOL_BLANK)
+        tiles[4].click()
+        self.assertTileIs(tiles[4], self.SYMBOL_O)
+        self.assertTileIs(tiles[2], self.SYMBOL_BLANK)
+        tiles[2].click()
+        self.assertTileIs(tiles[2], self.SYMBOL_X)
+        self.assertTileIs(tiles[5], self.SYMBOL_BLANK)
+        tiles[5].click()
+        self.assertTileIs(tiles[5], self.SYMBOL_BLANK)
+
+This will place X's in the top row and O's in the middle row. Once there are 3 X's there will be a winner and the O will not be place in the 5th indexed square.
+
+    def test_6_pieces(self):
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        self.assertTileIs(tiles[0], self.SYMBOL_BLANK)
+        tiles[0].click()
+        self.assertTileIs(tiles[0], self.SYMBOL_X)
+        self.assertTileIs(tiles[1], self.SYMBOL_BLANK)
+        tiles[1].click()
+        self.assertTileIs(tiles[1], self.SYMBOL_O)
+        self.assertTileIs(tiles[2], self.SYMBOL_BLANK)
+        tiles[2].click()
+        self.assertTileIs(tiles[2], self.SYMBOL_X)
+        self.assertTileIs(tiles[3], self.SYMBOL_BLANK)
+        tiles[3].click()
+        self.assertTileIs(tiles[3], self.SYMBOL_O)
+        self.assertTileIs(tiles[4], self.SYMBOL_BLANK)
+        tiles[4].click()
+        self.assertTileIs(tiles[4], self.SYMBOL_X)
+        self.assertTileIs(tiles[5], self.SYMBOL_BLANK)
+        tiles[5].click()
+        self.assertTileIs(tiles[5], self.SYMBOL_O)
+        self.assertTileIs(tiles[6], self.SYMBOL_BLANK)
+        tiles[6].click()
+        self.assertTileIs(tiles[6], self.SYMBOL_BLANK)
+
+This test case will place the pieces in alternating pattern so there is no winner. Once we see 6 pieces the 7th piece should not be placed. We assert that the 7th click will occupy a square.
+
+
+    def test_move(self):
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        self.assertTileIs(tiles[0], self.SYMBOL_BLANK)
+        tiles[0].click()
+        self.assertTileIs(tiles[0], self.SYMBOL_X)
+        self.assertTileIs(tiles[1], self.SYMBOL_BLANK)
+        tiles[1].click()
+        self.assertTileIs(tiles[1], self.SYMBOL_O)
+        self.assertTileIs(tiles[2], self.SYMBOL_BLANK)
+        tiles[2].click()
+        self.assertTileIs(tiles[2], self.SYMBOL_X)
+        self.assertTileIs(tiles[3], self.SYMBOL_BLANK)
+        tiles[3].click()
+        self.assertTileIs(tiles[3], self.SYMBOL_O)
+        self.assertTileIs(tiles[4], self.SYMBOL_BLANK)
+        tiles[4].click()
+        self.assertTileIs(tiles[4], self.SYMBOL_X)
+        self.assertTileIs(tiles[5], self.SYMBOL_BLANK)
+        tiles[5].click()
+        self.assertTileIs(tiles[5], self.SYMBOL_O)
+        self.assertTileIs(tiles[4], self.SYMBOL_X)
+        tiles[4].click()
+        self.assertTileIs(tiles[7], self.SYMBOL_BLANK)
+        tiles[7].click()
+        self.assertTileIs(tiles[4], self.SYMBOL_BLANK)
+        self.assertTileIs(tiles[7], self.SYMBOL_X)
+
+This test case will check if the move operation was done correctly. It will place pieces in alternating order and then try to move the X from the middle to the row below it.

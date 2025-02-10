@@ -1,0 +1,365 @@
+Setup:
+
+1. Install node.js through: https://nodejs.org/en/download
+
+2. cd into assignment3 and do:
+
+npm create vite@latest tic-tac-toe --template react
+
+to set up react app.
+
+Press y to install dependencies and select React and then JavaScript.
+
+3. cd into /tic-tac-toe and do npm install to install dependencies. You can now do npm run dev to run the program. Add the sample code snippet into tic-tac-toe.jsx:
+
+export default function Square() {
+  return <button className="square">X</button>;
+}
+
+change the main.jxs files so that it imports from the right file
+
+import App from './tic-tac-toe.jsx'
+
+4. npm install and npm run dev to open a local server to view code in a browser. There is an x button on the top left of the browser.
+
+5. having the following code:
+
+return <button className="square">X</button><button className="square">X</button>;
+
+does not work because return only takes one element at a time. We must enclose it with fragments (<> and </>) to have multiple JSX elements
+
+<>
+    <button className="square">X</button>
+    <button className="square">X</button>
+</>
+
+we know see two x's next to each other.
+
+6. to have 9 squares of x's in a row, we just have 9 of the same lines within the fragments.
+
+7. adding the following code will separate 3 squares into one row:
+
+<div className="board-row">
+    <button className="square">1</button>
+    <button className="square">2</button>
+    <button className="square">3</button>
+</div>
+
+also change the name of the component from a Square() to Board(). The code outputs a 3x3 board with numbers 1-9 in all of the boxes.
+
+8. We can pass data through props by defining another unction:
+
+function Square() {
+    return <button className="square">1</button>;
+}
+
+and exchanging the:
+
+<button className="square">1</button>
+
+lines with:
+
+<Square />
+
+This passes a square component to the board instead of defining the square inside the Board object.
+
+9. by changing the arguments of Square to { value } we can additionally change the values inside the square when invoking the function inside Board(). Here is the current code so far:
+
+function Square({ value }) {
+    return <button className="square">{value}</button>;
+}
+
+export default function Board() {
+    return (
+        <>
+            <div className="board-row">
+                <Square value="1" />
+                <Square value="2" />
+                <Square value="3" />
+            </div>
+            <div className="board-row">
+                <Square value="4" />
+                <Square value="5" />
+                <Square value="6" />
+            </div>
+            <div className="board-row">
+                <Square value="7" />
+                <Square value="8" />
+                <Square value="9" />
+            </div>
+        </>   
+    );
+}
+
+10. The next step is to make an interactive square.
+
+function Square({ value }) {
+    function handleClick() {
+        console.log('clicked!');
+    }
+    return (
+        <button
+            className="square"
+            onClick={handleClick}
+        >
+            {value}
+        </button>
+    );
+}
+
+This will output the "clicked!" to the chrome console(control shift j) when clicking one of the squares.
+
+11. Use states to mark the board to implement a tic-tac-toe game.
+
+import { useState } from 'react';
+
+and add the following line at the start of Square()
+
+const [value, setValue] = useState(null);
+
+value stores the value that setValue changes it to. Initially it will be set to null. Additionaly remove all the values from each Square component in Board() and remove the input argument in Square().
+
+11. Now we change the way handleClick() affects the board. Instead of logging that it was clicked, set the value of the square:
+
+setValue('X');
+
+12. add the line of code at the beginning of Board() to initialize the boxes to all null:
+
+const [squares, setSquares] = useState(Array(9).fill(null));
+
+Additionally add the values of each square to be the values of the corresponding elements in the array.
+
+13. remove the code in Square() and replace it with:
+
+function Square({value}) {
+    return <button className="square">{value}</button>;
+}
+
+This allows the square to receive a value from the Board().
+
+14. add an onSquareClick argument to Square():
+
+function Square({value, onSquareClick}) {
+    return (
+        <button className="square" onClick={onSquareClick}>
+            {value}
+        </button>
+    );
+}
+
+additionally create a handleClick() function and update the Board():
+
+export default function Board() {
+    const [squares, setSquares] = useState(Array(9).fill(null));
+    
+    function handleClick(i) {
+        const nextSquares = squares.slice();
+        nextSquares[i] = "X";
+        setSquares(nextSquares);
+    }
+
+    return (
+        <>
+            <div className="board-row">
+                <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
+                <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
+                <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
+            </div>
+            <div className="board-row">
+                <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
+                <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
+                <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
+            </div>
+            <div className="board-row">
+                <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
+                <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
+                <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
+            </div>
+        </>   
+    );
+}
+
+the new syntax:  onSquareClick={() => handleClick(0)} is an arrow function, which allows us to define functions in one line.
+
+When the square is clicked, it will call handleClick(i). This change from earlier allows the states to be handled by the board instead of the individual squares.
+
+This allows us to determine winners of the tic-tac-toe game.
+
+15. Now we need to implement taking turns in the game. Add the state code inside Board().
+
+const [xIsNext, setXIsNext] = useState(true);
+
+Additionally change "X" to "O" depending on if xIsNext is true of false.
+
+function handleClick(i) {
+    const nextSquares = squares.slice();
+    if (xIsNext) {
+        nextSquares[i] = "X";
+    } else {
+        nextSquares[i] = "O";
+    }
+    setSquares(nextSquares);
+    setXIsNext(!xIsNext);
+}
+
+This alternates the X and O for each click, but now we can override X's and O's with additional clicks on the same box.
+
+To prevent this add a return statement if the click is not null: 
+
+if (squares[i]) {
+    return;
+}
+
+16. The next step is to calculate the winner:
+
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+}
+  
+This checks every combination of a line to calculate the winner.
+
+Call calculateWinner(squares) inside of handleClick(i). Add the following code to check the status of the board. If there is a winner display the winner. Otherwise
+
+it will display who's turn is next.
+
+const winner = calculateWinner(squares);
+let status;
+if (winner) {
+    status = "Winner: " + winner;
+} else {
+    if (xIsNext) {
+        status = "Next player: X";
+    } else {
+        status = "Next player; O";
+    }
+}
+
+and add <div className="status">{status}</div> to the return of Board(). Now we have a working tic-tac-toe game.
+
+16. Implementing history into the game:
+
+export default function Game() {
+  const [xIsNext, setXIsNext] = useState(true);
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board />
+      </div>
+      <div className="game-info">
+        <ol>{/*TODO*/}</ol>
+      </div>
+    </div>
+  );
+}
+
+Instead of Board being the top level, we create another top level component called game. Move most of the states to Game and add arguments for Board({ xIsNext, squares, onPlay })
+
+To render the current move, instead of tracking the state, we just look at the last element of history since we have already calculated it and stored it:
+
+const currentSquares = history[history.length - 1];
+
+17. Add the following code to update the board:
+
+function handlePlay(nextSquares) {
+    // TODO
+}
+
+<Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+
+18. Replace setSquares and setXIsNext in handleClick() of Board() with 
+
+onPlay(nextSquares);
+
+so that the Game() can update the board instead of Board()
+
+19. Update handlePlay(nextSquares) now that we have replaced the equivalent version in Board() by including:
+
+    setHistory([...history, nextSquares]);
+    setXIsNext(!xIsNext);
+
+20. Add the following code to display buttons to jump to certain points of the game:
+
+  function jumpTo(nextMove) {
+    // TODO
+  }
+
+  const moves = history.map((squares, move) => {
+    let description;
+    if (move > 0) {
+      description = 'Go to move #' + move;
+    } else {
+      description = 'Go to game start';
+    }
+    return (
+      <li>
+        <button onClick={() => jumpTo(move)}>{description}</button>
+      </li>
+    );
+  });
+
+
+and update the ordered list in the return statement of Game():
+
+        <ol>{moves}</ol>
+
+
+
+21. This code does not work yet for the game because the game does not know which elements were updated. We must add keys for the moves:
+
+const moves = history.map((squares, move) => {
+    let description;
+    if (move > 0) {
+      description = 'Go to move #' + move;
+    } else {
+      description = 'Go to game start';
+    }
+...
+
+22. add the following line of code to keep track of which step the game is currently looking at:
+
+  const [currentMove, setCurrentMove] = useState(0);
+
+23. update the jumpTo(nextMove) function so that it can update the game: Every even move is an X and every odd move is O
+
+    setCurrentMove(nextMove);
+    setXIsNext(nextMove % 2 === 0);
+
+
+24. Replace setHistory with:
+
+  const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+  setHistory(nextHistory);
+  setCurrentMove(nextHistory.length - 1);
+
+the first line changes it so that you only keep the history of where you are playing from.
+
+25. Lastly update currentSquares at the beginning of Game() to:
+
+  const currentSquares = history[currentMove];
+
+instead of always playing from the history's final move.
+
+26. change initializing xIsNext to:
+
+  const xIsNext = currentMove % 2 === 0;
+
+and removing the setXIsNext from the functions within Game().
+
+This removes redundancy.
