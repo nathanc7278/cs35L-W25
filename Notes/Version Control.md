@@ -65,6 +65,12 @@ All of these type of files can be different at the same time.
 
 `git log` shows the complete history of all your commits
 
+`git log --summary` gives slightly more information
+
+`git log --pretty=fuller` gives more information on the git log
+
+`git log 
+
 Git commits can be represented as a directed graph:
 
 ```mermaid
