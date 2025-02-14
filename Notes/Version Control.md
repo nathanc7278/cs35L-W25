@@ -129,3 +129,11 @@ history is immutable in Git. Commits cannot be changed once they are made
 `git ls-files` shows all files that are in version controls
 
 `.gitignore` file contains a list of file name patterns for Git to ignore. We do not want to put these type of files into version control.
+
+Creating a directed graph between two commits. The graph should include commit ID, author, and committer if it is different from author
+
+```
+git log --graph --pretty=format:"%H:%an:%cn" \
+c03bee6e9f5c05259f5f501e1f47cd8adb63af38 2a7d63a2453e2c30353342a2c9385fa22a846987 \
+| awk -F':' '{if ($2 == $3) print $1, $2; else print $0}' | tr ':' ' '
+```
