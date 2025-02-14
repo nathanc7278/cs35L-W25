@@ -69,7 +69,7 @@ All of these type of files can be different at the same time.
 
 `git log --pretty=fuller` gives more information on the git log
 
-`git log 
+`git log -S "pattern"` searches for the specific commit a pattern was introduced
 
 Git commits can be represented as a directed graph:
 
