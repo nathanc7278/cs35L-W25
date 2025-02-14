@@ -137,3 +137,7 @@ git log --graph --pretty=format:"%H:%an:%cn" \
 c03bee6e9f5c05259f5f501e1f47cd8adb63af38 2a7d63a2453e2c30353342a2c9385fa22a846987 \
 | awk -F':' '{if ($2 == $3) print $1, $2; else print $0}' | tr ':' ' '
 ```
+
+`git push` to send commits from local repository to github
+
+`git pull` to take changes from github and put them into local repo
