@@ -141,3 +141,9 @@ c03bee6e9f5c05259f5f501e1f47cd8adb63af38 2a7d63a2453e2c30353342a2c9385fa22a84698
 `git push` to send commits from local repository to github
 
 `git pull` to take changes from github and put them into local repo
+
+`git merge "branch"` this merges the changes from the branch with the branch you are currently located.
+
+`git checkout "branch or commit"` this detaches HEAD and puts the cursor at the commit or branch
+
+`git checkout -b "branch name" "location"` creates a new branch and puts the cursor at location
