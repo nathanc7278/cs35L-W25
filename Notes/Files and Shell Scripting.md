@@ -194,13 +194,27 @@ By doing `echo $?`, and output of:
 
 `shuf` command that shuffles a file.
 
-### In Lisp mode
+### Awk
 
-```lisp
-    (+ 5 12) // C-j
-    17
+Awk is a scripting language to manipulate data
 
-    (kill-emacs)
-```
+Generally: `awk options 'selection_criteria {action }' input-file > output-file`
 
-`C-j` runs the previous line's command. 
+`awk '{print $2, $1}'` will swap the two arguments and print them
+
+`awk '/hi/ {print}' sample.txt` will print any lines that match the pattern "hi"
+
+Awk Variables:
+
+`$0` represents a whole line
+`$n` represents the `n`th record of a line
+`$NF` represents the last field of a line
+
+* `NR` counts the number of input records, this is usually the line number
+* `NF` counts the number of fields in a record
+* `FS` this is the field seperator, by default it is a space
+* `RS` this is the record seperator, by default this is a newline
+*  `OFS` this is the output field seperator
+*  `ORS` this is the output record seperator
+
+`awk 'NR==3, NR==6 {print NR,$0}' sample.txt` This prints lines 3 to 6
