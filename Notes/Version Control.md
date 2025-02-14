@@ -71,6 +71,23 @@ All of these type of files can be different at the same time.
 
 `git log -S "pattern"` searches for the specific commit a pattern was introduced
 
+`git log --pretty=format:" identifiers"` will show git log with specific identifiers:
+
+* `%H` commit hash
+* `%h` abbreviated commit hash
+* `%T` Tree hash
+* `%t` Abbreviated tree hash
+* `%P` Parent hashes
+* `%p` Abbreviated parent hashes
+* `%an` Author name
+* `%ae` Author email
+* `%ar` Author date, relative
+* `%cn` Committer name
+* `%ce` Committer email
+* `%cd` Committer date
+* `%cr` Committer date, relative
+* `%s` Subject
+
 Git commits can be represented as a directed graph:
 
 ```mermaid
