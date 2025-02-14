@@ -88,6 +88,8 @@ All of these type of files can be different at the same time.
 * `%cr` Committer date, relative
 * `%s` Subject
 
+`git log --graph` shows an ascii graph of the commit history
+
 Git commits can be represented as a directed graph:
 
 ```mermaid
