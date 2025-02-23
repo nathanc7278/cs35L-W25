@@ -203,9 +203,9 @@ Mutable Sequences:
 
 `d = d'` creates the shallowest copy of a dictionary. Simply points `d` to `d'`
 
-`d.copy(d')` creates a shallow copy of the dictionary itself, with each object inside the dictionary `d` as pointers to the elements in `d'`
+`d = copy.copy(d')` creates a shallow copy of the dictionary itself, with each object inside the dictionary `d` as pointers to the elements in `d'`
 
-`d.deepcopy(d')` creates a deep copy of the dictionary `d'`
+`d = copy.deepcopy(d')` creates a deep copy of the dictionary `d'`
 
 `d.items()` gives the list of items
 
