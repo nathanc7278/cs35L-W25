@@ -170,10 +170,14 @@ Y = s[:], if you change Y, s[] will not change.
 
 `strip("optional")` removes leading and trailing whitespace and the optional characters that are passed as arguments. 
 
+* can also do `rstrip()` to remove only from right side of text
+  
 ```
     txt = ',,,,,rrrtttgg....banana...rrr"
     txt.strip(",.grt") # results in "banana"
 ```
+
+`split('delimeter')` seperates a string into a list of items based on the delimeter.
 
 Mutable Sequences:
 
