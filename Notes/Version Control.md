@@ -147,3 +147,105 @@ c03bee6e9f5c05259f5f501e1f47cd8adb63af38 2a7d63a2453e2c30353342a2c9385fa22a84698
 `git checkout "branch or commit"` this detaches HEAD and puts the cursor at the commit or branch
 
 `git checkout -b "branch name" "location"` creates a new branch and puts the cursor at location
+
+Plumbing vs Porcelain commands
+
+`Plumbing` commands refer to low level commands of git. Usually, you should not touch these commands unless you are a git expert.
+
+`Porcelain` commands are the high level commands that you may use daily.
+
+One example of a plumbing command is `git show HEAD`
+
+## Navigating .git directory:
+
+`.git/branches` is a directory that is obselete. It is left there for backward compatibility for older repositories. It was abandoned because it was too slow to store branches in a directory.
+
+`.git/config` tells you info needed to access the repository
+
+`git config` command is a better way to edit the `.git/config` because it has safety features.
+
+`git config -l` displays the config file
+
+`.git/description` is also obselete
+
+`.git/HEAD` is a pointer to where current commit is
+
+`.git/hooks` contains shell scripts that act as a sample for what you can put there
+
+* these change how git behaves
+* file names are specified by git
+
+`.git/index` is the file that keep track of the changes needed to do in the future. This also keeps a cache for current changes.
+
+`.git/info/exclude` lists files that need to be excluded
+
+`.gitignores` is a working file under git control
+
+* `/dirname` is relative to current directory, not absolute when written in `.gitignore`
+* `filename` will ignore any file with the name `filename` in the git repository 
+
+`.git/logs` contains a metahistory
+
+`.git/objects` is where git keeps every change
+
+* this is an object orientated database
+* ext2 was originally used for managing entries in `.git/objects`
+    * this operation was slow to add/remove entries `O(n^2)`
+    * the way they counteracted this was by looking at only first two char of file name. There could only be 256 entries because there are 16 char per hex
+
+under `.git/objects/info`
+
+* there is a commit-graph
+* there are packs which lists our packs (when we have files that are too large)
+
+`.git/refs/heads` contains the branches of a git repo
+
+`.git/refs/packsref` stores refereences to packs
+
+### git objects
+
+The simplest object in git is called a `blob`. Each blob is a sequence of bytes
+
+`git hash-object --stdin` computes thhe hash or checksum of standard input
+
+`git hash-object --stdin -w` computes the hash and goes into repository to create an object with that hash. This object is a blob
+
+Say the has is `c5e75...`
+
+the object is contained in `.git/objects/c5/e75...`
+
+`git cat-file -p "hash"` prints out the contents of a blob
+
+`git cat-file -t "hash"` gives the object's type
+
+Both the object's type and content are immutable
+
+The next simplest object is a `tree`. It is similar to a linux directory. It maps names to IDs, type, and mode.
+
+* you can only create a tree for objects that already exist
+* trees cannot be changed once it is made
+
+`git catfile -p 'master^{tree}` prints out the table consisting of mode, type, ID, name
+
+`git update-index --add --cacheinfo '1000644m, 98f88..., aenid.txt` adds an entry into a tree
+
+`git write tree` 
+
+The last object is a `commit` object. It specifies a tree, parent of commit, and other details.
+
+### Compression in git repo
+
+* save space and secondary storage
+* save time in accessing
+
+Git uses:
+
+* Huffman coding + sender(compressor) tells recipient(decompressor) what popularities are
+* Dictionary Compression
+
+`Huffman Coding` communicate symbols as a sequence of bits. This byte can have variable bit width encoding
+
+1. Start from least occuring character and combine them into a subtree.
+2. Repeat this and you will get a binary tree that contains the encoding
+
+`Adaptive Huffman Coding` Both sender and recipient has empty binary tree that gets updated as every character is read. This is faster than going through the file once for reading frequencies and then another time for sending.
