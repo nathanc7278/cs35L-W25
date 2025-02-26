@@ -249,3 +249,66 @@ Git uses:
 2. Repeat this and you will get a binary tree that contains the encoding
 
 `Adaptive Huffman Coding` Both sender and recipient has empty binary tree that gets updated as every character is read. This is faster than going through the file once for reading frequencies and then another time for sending.
+
+`git fetch` brings local repository in sync with remote
+
+2 branches:
+
+* master `current working repo`
+* origin/master `remote repo`
+
+`git pull` is equivalent to git fetch + git merge
+
+`git remote` shows current remote
+
+`git remote -v` shows URLs used to fetch/push
+
+`git remote show origin` shows more about origin
+
+## Tags
+
+each commit has a confusing name (commit_hash)
+
+* a text file contained in a repository has tags (version, commit_hash) tuple
+    * this is not done because someone has to maintain this file, prone to error
+
+`git tag` will show all names that reference to commit
+
+`git tag -a cs35-L -m"demo for class" HEAD^` creates a tag in a local repository
+
+## Branches
+
+`branch` is a lightweight movable pointer to a commit. Branch updates to head when you do a commit on that branch
+
+`git branch` displays the branch in a git repo
+
+`git checkout "branch-name"` changes your current branch to "branch-name"
+
+#### Reasons for a branch:
+
+* maintenence of older version
+* developing a new feature (or bug fix)
+* forking due to a dispute (rare)
+
+`merge commit` is a commit that has 2 or more parents
+
+* the goal of this is to combine the best features of each branch
+* may have collisions during a merge
+
+The angle brackets in a merge message will show collisions. Note that if there are no angle brackets, there could still be errors in the merged code.
+
+`backporting/cherrypicking` picking some features/bug fixes from main branch and copying it into a branch (also called `rebase`)
+
+`git rebase "branch"` moves all changes from currently checked out branch to "branch". This is similar to merging, but the graph will be linear compared to a merge.
+
+Merging tells more about history; Rebasing has simpler histories
+
+`git rebase -i "commit"` lets you interact with editor to edit the commits you want to rebase.
+
+* this command would not make sense if there was no -i option. If you are rebasing/merging from current branch, nothing would change because it is the same branch.
+
+Note: Do not rebase things in remote. Only rebase stuff taht is not pushed. Doing a rebase on remote will confuse other developers.
+
+`git push` put commits from your repo to remote's repo. This is opposite of git fetch
+
+`git blame "file"` displays whos made the change of a line on a file
