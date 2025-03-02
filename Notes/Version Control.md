@@ -312,3 +312,54 @@ Note: Do not rebase things in remote. Only rebase stuff taht is not pushed. Doin
 `git push` put commits from your repo to remote's repo. This is opposite of git fetch
 
 `git blame "file"` displays whos made the change of a line on a file
+
+`Bisecting` does a binary search on commits to find where a bug was introduced
+
+```
+git bisect start
+git bisect bad HEAD                 // bug found here
+git bisec good v27.0                // no bug in this version
+git checkout 9cf34...27             
+make check                          
+git bisect good
+git bisect skip 8493...27           // for unrelated bug
+```
+
+is equivalent to:
+
+```
+git bisect start HEAD v27.0
+git bisect run make check         // make check can be any command when running bisect
+```
+
+When you have a working file and you are tasked to immediately fix a security issue in maint branch, one way to do this is:
+
+* make a new branch
+* commit
+* checkout maint
+* commit
+* git checkout mystuff
+
+Some developers don't like this because of the motto "Don't break the build"
+
+Instead:
+
+```
+git stash push
+git checkout maint
+git commit
+git checkout main
+git stash pop
+```
+
+or
+
+```
+git diff > mystash.diff
+git checkout maint
+git commit
+git checkout main
+patch -p1 < mystash.diff
+```
+
+There is a possibility that apply a stash or patch can lead to collisions.
