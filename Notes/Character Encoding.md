@@ -146,3 +146,16 @@ In Python, we can turn strings to a byte string to compare by using:
     z = y.decode()
 ```
 
+### Dictionary Compression
+
+* we can do better than Huffman Coding by encoding words rather than individual symbols.
+```
+
+    |   | 3 o'clock |                     | 3 o'clock |
+    
+    |<----------------65536-------------->|<--25381-->|
+    
+                        sliding window
+```
+
+
