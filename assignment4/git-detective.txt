@@ -1,0 +1,62 @@
+Doing the following command:
+
+git log -S 'In read-only repositories, "git merge-tree"' 
+
+shows us 2 commits.
+
+git log -S 'In read-only repositories, "git merge-tree" tried to come up with a merge result tree object, which it failed (which is not wrong) and led to a segfault (which is bad), which has been corrected."
+
+does not show up on when using git log because the changes in the commit separate this string into multiple lines with '+' appended to the front. Here is the output of git log:
+
+commit 7d8dc5a1af9da32ac7454499f308db757eb19642
+Author: Junio C Hamano <gitster@pobox.com>
+Date:   Tue Oct 25 17:11:13 2022 -0700
+
+    Downmerge a handful of topics for 2.38.2
+
+commit e85701b4af5b7c2a9f3a1b07858703318dce365d
+Author: Junio C Hamano <gitster@pobox.com>
+Date:   Mon Oct 10 10:09:09 2022 -0700
+
+    The (real) first batch for 2.39
+    
+    Signed-off-by: Junio C Hamano <gitster@pobox.com>
+
+The commit IDs of relevant changes are:
+
+7d8dc5a1af9da32ac7454499f308db757eb19642
+e85701b4af5b7c2a9f3a1b07858703318dce365d
+
+By doing
+
+git show 7d8dc5a1af9da32ac7454499f308db757eb19642
+git show e85701b4af5b7c2a9f3a1b07858703318dce365d
+
+we can see what changed in these files.
+
+From commit e85701b4af5b7c2a9f3a1b07858703318dce365d
+
+we see that:
+
++ * In read-only repositories, "git merge-tree" tried to come up with a
++   merge result tree object, which it failed (which is not wrong) and
++   led to a segfault (which is bad), which has been corrected.
++   (merge 92481d1b26 js/merge-ort-in-read-only-repo later to maint).
+
+git show 92481d1b26
+
+On the top of this commit it says:
+
+"In the previous commit, we fixed a segmentation fault when a tree object could not be written."
+
+So we look in the previous commit with:
+
+git show 92481d1b26^
+
+The commit ID of the change to git merge-tree is: 0b55d930a69692c7f4e7b90e35fa41f6c46df4bc
+
+Johannes Schindelin authored the changes. The changes that were made were for when the tree objects were not written. Every time a merge operation happened, there was an additional return statement to make sure that the tree object was not accessed later when it was null, causing a segfault.
+
+git format-patch -1 92481d1b26^ to create a patch file.
+
+

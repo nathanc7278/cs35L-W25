@@ -1,0 +1,30 @@
+To get the range between those two commits:
+
+git log --graph --pretty=format:"%h %an %cn" --ancestry-path 2a7d63a2453e2c30353342a2c9385fa22a846987^..c03bee6e9f5c05259f5f501e1f47cd8adb63af38
+
+and it will show the paths from the two commits.
+
+The clone of Git's git repository shows:
+
+* master                e2067b49ec The tenth batch
+  remotes/origin/HEAD   -> origin/master
+  remotes/origin/jch    515fd3a3b8 Merge branch 'bc/ancient-ci' into jch
+  remotes/origin/maint  f93ff170b9 Git 2.48.1
+  remotes/origin/master e2067b49ec The tenth batch
+  remotes/origin/next   4767266eb4 Merge branch 'ac/doc-http-ssl-type-config' into next
+  remotes/origin/seen   99452fd9ca Merge branch 'mh/doc-commit-title-not-subject' into seen
+  remotes/origin/todo   9a307cd2d6 What's cooking (2025/02 #04)
+
+while the one on seasnet shows:
+
+  maint                 f93ff170b9 Git 2.48.1
+* master                388218fac7 The ninth batch
+  remotes/origin/HEAD   -> origin/master
+  remotes/origin/jch    515fd3a3b8 Merge branch 'bc/ancient-ci' into jch
+  remotes/origin/maint  f93ff170b9 Git 2.48.1
+  remotes/origin/master 388218fac7 The ninth batch
+  remotes/origin/next   d13b5baf06 Merge branch 'bc/contrib-thunderbird-patch-inline-fix' into next
+  remotes/origin/seen   5ffff88925 Merge branch 'sj/ref-consistency-checks-more' into seen
+  remotes/origin/todo   15c6383f80 What's cooking (2025/02 #03)
+
+The GitHub's master branch says the tenth batch, while Seasnet's master branch says the ninth batch. This means that GitHub is ahead of Prof. Eggert's master branch. Prof. Eggert also has an additional branch called maint, which says Git 2.48.1. 

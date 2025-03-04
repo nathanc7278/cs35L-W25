@@ -1,0 +1,28 @@
+Inside the cloned tzdb repository, use the command:
+
+git grep "Even newspaper reports present contradictory information."
+
+The output of this command is:
+
+northamerica:# and wrote "Even newspaper reports present contradictory information."
+
+By doing:
+
+git log -S "Even newspaper reports present contradictory information."
+
+We get the following information:
+
+commit c12b432741eed9a422fbf99fa27af6e7a941d88b
+Author: Arthur David Olson <ado@elsie>
+Date:   Thu Dec 21 11:43:42 1995 -0500
+
+    Eggert changes
+    
+    SCCS-file: northamerica
+    SCCS-SID: 7.20
+
+From this information we can do:
+
+git diff c12b432741eed9a422fbf99fa27af6e7a941d88b^ c12b432741eed9a422fbf99fa27af6e7a941d88b
+
+to find exactly what changed in the version when this line was introduced.
