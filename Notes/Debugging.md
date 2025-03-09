@@ -129,3 +129,186 @@ gdb bt: h, f, main
 
 // when h is done, some code in f will be ran, and then some code in main will be ran
 ```
+
+## Setup for using GDB
+
+* compilation options
+* `set env LC_ALL fr_FR_utf8` is equivalent to `LC_ALL=fr_FR_utf8` in the shell
+* `set cwd /usr/local/cs`
+* `set disable-randomization off`
+
+### Address Space Layout Randomization (ASLR)
+
+* malloc returns "random" hard to get addresses
+* gets in the way of stabilizing failure
+
+`Breakpoints` a spot in machine code
+
+* executable machine instruction
+* symbol table
+* names, maichine addresses, source code locations
+* type information
+* local variables
+* `gcc -g3` generate debugging info
+
+## System Calls (lower level)
+
+* `read(0, buf, 1000)` reads 1000 bytes from file descriptor 0 and stores it in buf.
+* `write(1, buf, 500)` writes 500 bytes from buf into file descriptor.
+* `ptrace` is used by debuggers
+
+### Options with GDB
+
+* Remote debugging:
+    * embedded device
+    * small RAM
+    * tiny OS
+* Have GDB on remote device that connects with embedded device
+    * serial port/internet to connect with
+
+
+* `set a b` setting config variable
+* `dir /a/b/src` look a directory for source code
+* `define pp` GDB extension language Guile + Python
+
+## Low Level Performance Improvements
+
+assembly language is unportable and rarely used
+
+In C: we can write `asm("halt");`. 
+
+`__attribute__((...))` is advice to the compiler to run faster
+
+```C
+#if !__GNUC__
+#define __attribute__(x) /* if compiler is not GNUC then define function attribute to nothing*/
+#end if
+```
+
+`long x __attribute__((aligned(8)));` makes variable x to be a multiple of 8
+
+`void error(char const *msg) __attribute__((cold));` or `attribute((hot));` tells the compiler that this part of the program is not execute often or it is executed often.
+
+* hot stuff is stored in cache while cold stuff is store in RAM or flash drive.
+* this is controversial, some people like to let compiler figure it out or use profiling
+
+`gcc -flto` link time optimization/whole program optimization. `O(n^2)`
+
+### Reliability Improvement
+
+#### Static Checking (Checked at compile time)
+
+You help your compiler:
+```C
+# define N 1024
+static_assert(0 < N && N <1000);        // must be a constant expression, cannot be variable
+static_assert(UID_MAX <= INT_MAX);
+int uid = getuid();
+```
+
+compiler does work:
+
+`gcc -Wcomment` warns you if /* ... /* ... */
+
+`gcc -Wparenthese` a<<b+c needs to be written as a<<(b+c)
+
+`gcc -Waddress` 
+
+```C
+    char *p = getusername();
+    if (p == "abc") {       // this is pointer comparison, not string comparison
+        return 1;
+    }
+```
+
+`gcc -Wstrict-aliasing` warns you about misue of pointer types. Assigning a long long into a long.
+
+`gcc -Wmaybe_uninitialized` 
+
+```C
+    int i;
+    int j = getchar();
+    if (j < 27) {
+        return i;
+    }
+```
+
+`gcc -Wall` all "normally" useful warning options
+
+`gcc -fanalyzer` look at entire module, cheaper than -flto
+
+You can also help compiler do static checking and gain performance:
+
+```C
+[[noreturn]] void exit(init);
+if (i < 0) {
+    exit();
+}
+```
+
+```C
+int hash(char *, size_t) __attribute__((pure, access(read_only, 1, 2)))
+// pure does not change state, but can depend on state
+// taken from first argument
+// size from second argument
+[[reproducible]]
+double sqrt(double) __attribute__((const))
+// const doesn't change state and is not state dependent
+[[unsequenced]]
+```
+
+gcc will enforce this when compiling hash. gcc can optimize caller based on this
+
+```C
+int my_print(void*, char const *, ...)__attribute__((nonnull(1), format(printf(2,3))));
+```
+
+### Runtime Checking
+
+Check for errors yourself:
+
+```C
+#include <stdchdint.h>
+bool sum (int a, int b, int *r) {
+    return ddadd(&r, a, b);
+}
+```
+
+`gcc -fstanitize=undefined` whenever the behavior is not defined by language, make the program crash reliably
+
+`gcc -fsanitize=address` catches behaviors that lead to invalid addresses
+
+The fsanitize options cannot be done at the same time.
+
+`gcc -fwrapv` for integer arithmetic, overflows
+
+`gcc -fsanitize=thread` puts instrumentation to catch race conditions (when one thread is reading and another is writing into part of code at the same time)
+
+`valgrind diff /dev/null password` runs diff using GDB and checks for mistakes. Valgrind is a GDB subset that looks for bad addresses
+
+* slow
+* no need to recompile
+
+#### Runtime Checking Problems
+
+* cost at runtime
+* only checks one run
+* can miss errors in that run
+
+### Portability Checking:
+
+platforms ahve many attributed(exponential)
+
+* cross-compiling
+    * build on x86-64, generates code for arm
+
+### Backups (Disaster Recovery)
+
+* periodically copy everything: restore backup on disaster
+* inverse of caching
+* you must have a failure model
+    * your flashdrive fails
+    * your battery fails
+    * outside attacker deleting files
+    * inside attacker modifies/leaks files
+    
